@@ -23,8 +23,9 @@ import android.view.ViewGroup
 import android.view.accessibility.AccessibilityNodeInfo
 import android.widget.Button
 import androidx.annotation.RequiresApi
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.example.wordsapp.DetailActivity.Companion.LETTER
+import com.example.wordsapp.WordListFragment.Companion.LETTER
 
 /**
  * Adapter for the [RecyclerView] in [MainActivity].
@@ -38,7 +39,7 @@ class LetterAdapter :
     /**
      * Provides a reference for the views needed to display items in your list.
      */
-    class LetterViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+    class LetterViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val button: Button = view.findViewById(R.id.button_item)
     }
 
@@ -65,10 +66,8 @@ class LetterAdapter :
         val item = list[position]
         holder.button.text = item.toString()
         holder.button.setOnClickListener {
-            val context = holder.itemView.context
-            val intent = Intent(context, DetailActivity::class.java)
-            intent.putExtra(LETTER, holder.button.text.toString())
-            context.startActivity(intent)
+            val action = LetterListFragmentDirections.actionLetterListFragmentToWordListFragment(letter = holder.button.text.toString())
+            holder.view.findNavController().navigate(action)
         }
     }
 
